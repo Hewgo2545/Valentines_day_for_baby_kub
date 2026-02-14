@@ -48,7 +48,7 @@
             border-radius: 15px; margin-bottom: 15px; object-fit: cover;
         }
 
-        /* --- หน้าใหม่: จดหมายฉบับยาว --- */
+        /* หน้าจดหมายฉบับยาว */
         #page-letter {
             display: none;
             position: relative;
@@ -58,7 +58,7 @@
             z-index: 10;
         }
         .long-letter {
-            background: #fffdf5; /* สีเหมือนกระดาษถนอมสายตา */
+            background: #fffdf5;
             padding: 40px 30px;
             border-radius: 5px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.1);
@@ -124,13 +124,13 @@
             </div>
             <p id="photoText">ยินดีด้วยที่เปิดเจอ!</p>
             <button id="nextBtn" onclick="nextContent()" style="background:#ff8fa3; color:white;">ดูรูปถัดไป 👉</button>
-            <button id="toLetterBtn" class="hidden" onclick="goLetter()" style="background:var(--primary-pink); color:white;">มีอะไรจะให้อ่านด้วย</button>
+            <button id="toLetterBtn" class="hidden" onclick="goLetter()" style="background:var(--primary-pink); color:white;">อ่านความในใจของเค้าหน่อย..</button>
         </div>
     </div>
 
     <div id="page-letter">
         <div class="long-letter">
-            <h3 style="text-align: center; color: var(--primary-pink);">ถึงเธอนะ หมูอ้วน ❤️</h3>
+            <h3 style="text-align: center; color: var(--primary-pink);">ถึง... หมูอ้วนของเค้า ❤️</h3>
             <p>
                 สุขสันต์วันวาเลนไทน์นะอ้วน... <br><br>
                 ตั้งแต่วันแรกที่เจอกันจนถึงวันนี้ ขอบคุณนะที่คอยอยู่ข้างๆ กันมาตลอด 
@@ -140,7 +140,7 @@
                 แต่ความรักที่เค้ามีให้เธอ มันเพิ่มขึ้นทุกวันเลยนะ 
                 ดีใจจริงๆ ที่ได้ไปเชียงคานด้วยกัน ได้ไปดูหนังด้วยกัน และได้ใช้เวลาร่วมกัน
                 <br><br>
-                อยู่เป็น "หมูอ้วน" ของเค้าแบบนี้ไปนานๆ นะคั้บ... รักเธอที่สุดในโลกเลย!
+                อยู่เป็น "หมูอ้วน" ของเค้าแบบนี้ไปนานๆ นะครับ... รักเธอที่สุดในโลกเลย!
             </p>
             <div style="text-align: center; margin-top: 30px;">
                 <button onclick="goFinal()" style="background: var(--primary-pink); color: white;">กดเพื่อตอบคำถาม 💌</button>
@@ -158,12 +158,33 @@
     </div>
 
     <script>
+        // --- ระบบ YouTube API ปรับปรุงเพื่อมือถือ ---
         var player;
+        var isPlayerReady = false;
+
         function onYouTubeIframeAPIReady() {
             player = new YT.Player('youtube-player', {
-                height: '0', width: '0', videoId: 'ty_3ox-peHg',
-                playerVars: { 'autoplay': 0, 'loop': 1, 'playlist': 'ty_3ox-peHg' }
+                height: '0',
+                width: '0',
+                videoId: 'ty_3ox-peHg',
+                playerVars: {
+                    'autoplay': 0,
+                    'loop': 1,
+                    'playlist': 'ty_3ox-peHg',
+                    'playsinline': 1, // บังคับให้เล่นในหน้าเว็บ (สำคัญมากสำหรับ iOS)
+                    'enablejsapi': 1,
+                    'origin': window.location.origin
+                },
+                events: {
+                    'onReady': onPlayerReady
+                }
             });
+        }
+
+        function onPlayerReady(event) {
+            isPlayerReady = true;
+            // เทคนิค Mute ก่อนแล้วค่อยเล่น เพื่อหลีกเลี่ยงการโดนบล็อก Autoplay
+            event.target.mute();
         }
 
         var tag = document.createElement('script');
@@ -171,11 +192,17 @@
         var firstScriptTag = document.getElementsByTagName('script')[0];
         firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
+        // --- ข้อมูลรูปและข้อความของคุณ ---
         const myPics = ["Pics/1.jpg", "Pics/2.jpg", "Pics/3.jpg", "Pics/4.jpg", "Pics/5.jpg", "Pics/6.jpg", "Pics/7.jpg", "Pics/8.jpg"];
         const messages = [
-            "ยินดีด้วยที่เปิดเจอ!", "รูปนี้น่ารักจัง", "มีความสุขทุกครั้งที่อยู่ด้วยนะอ้วน", 
-            "ขอบคุณที่เข้ามาในชีวิตนะ", "ถ่ายหน้ากระจกที่ เชียงคานต้วย", "อยากไปเที่ยวด้วยกันอีก", 
-            "รักนะหมูอ้วน เค้ารักเธอมากๆ", "รูปสุดท้ายแล้วนะ... เซะซี่ม้ะ  55555"
+            "ยินดีด้วยที่เปิดเจอ!", 
+            "รูปนี้น่ารักจัง", 
+            "มีความสุขทุกครั้งที่อยู่ด้วยนะอ้วน", 
+            "ขอบคุณที่เข้ามาในชีวิตนะ", 
+            "ถ่ายหน้ากระจกที่ เชียงคานต้วย", 
+            "อยากไปเที่ยวด้วยกันอีก", 
+            "รักนะหมูอ้วน เค้ารักเธอมากๆ", 
+            "รูปสุดท้ายแล้วนะ... เซะซี่ม้ะ  55555"
         ];
 
         let idx = 0;
@@ -183,7 +210,12 @@
         const noWords = ["รักหน่อยย", "ใจร้ายจัง", "ไม่รักจริงหรอ?", "น้อยใจแล้วนะ", "แงงงงงง", "ยอมกดรักเถอะ!"];
 
         function startExperience() {
-            if (player && player.playVideo) player.playVideo();
+            // เมื่อมีการคลิก (User Interaction) ให้สั่ง Unmute และเล่นเพลงทันที
+            if (player && isPlayerReady) {
+                player.unMute();
+                player.setVolume(100);
+                player.playVideo();
+            }
             document.getElementById('page1').style.display = 'none';
             document.getElementById('page2').style.display = 'flex';
             startHearts();
