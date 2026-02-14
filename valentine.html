@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Valentine's Day</title>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-pink: #ff4d6d;
+            --soft-pink: #fff0f3;
+        }
+
+        body, html {
+            margin: 0; padding: 0;
+            width: 100%; height: 100%;
+            font-family: 'Prompt', sans-serif;
+            overflow: hidden;
+            background-color: #ffe5ec;
+        }
+
+        /* หน้า 1: ซองจดหมาย */
+        #page1 {
+            display: flex; justify-content: center; align-items: center;
+            height: 100vh; background: #ffb3c1; transition: 0.5s;
+            position: relative; z-index: 100;
+        }
+        .envelope-wrapper { cursor: pointer; text-align: center; animation: bounce 2s infinite; }
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+            40% {transform: translateY(-20px);}
+            60% {transform: translateY(-10px);}
+        }
+        .envelope-icon { font-size: 100px; }
+
+        /* หน้า 2: สไลด์รูปภาพ */
+        #page2 {
+            display: none; position: relative; height: 100vh;
+            justify-content: center; align-items: center; flex-direction: column;
+        }
+        .paper-card {
+            background: white; padding: 20px; border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            text-align: center; max-width: 400px; width: 90%; z-index: 10;
+        }
+        .media-frame img {
+            width: 100%; height: auto; max-height: 400px;
+            border-radius: 15px; margin-bottom: 15px; object-fit: cover;
+        }
+
+        /* --- หน้าใหม่: จดหมายฉบับยาว --- */
+        #page-letter {
+            display: none;
+            position: relative;
+            height: 100vh;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+        }
+        .long-letter {
+            background: #fffdf5; /* สีเหมือนกระดาษถนอมสายตา */
+            padding: 40px 30px;
+            border-radius: 5px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            max-width: 450px;
+            width: 85%;
+            max-height: 70vh;
+            overflow-y: auto;
+            border-left: 5px solid #ffb3c1;
+            text-align: left;
+            line-height: 1.8;
+            color: #444;
+            animation: slideUp 1s ease-out;
+        }
+        @keyframes slideUp {
+            from { transform: translateY(100px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        /* หัวใจลอย */
+        .floating-emoji {
+            position: absolute; bottom: -50px; font-size: 24px;
+            animation: floatUp 6s linear infinite; opacity: 0; z-index: 0;
+        }
+        @keyframes floatUp {
+            0% { transform: translateY(0); opacity: 0; }
+            20% { opacity: 0.8; }
+            100% { transform: translateY(-110vh) rotate(360deg); opacity: 0; }
+        }
+
+        /* หน้า 3: คำถามสุดท้าย */
+        #page3 {
+            display: none; flex-direction: column; justify-content: center;
+            align-items: center; height: 100vh; text-align: center;
+        }
+        .rabbit-gif { width: 220px; border-radius: 15px; margin-bottom: 20px; }
+        .btn-group { display: flex; gap: 15px; align-items: center; justify-content: center; }
+        button {
+            padding: 10px 25px; border: none; border-radius: 30px;
+            cursor: pointer; font-size: 18px; font-weight: bold; transition: 0.3s;
+        }
+        #yesBtn { background: var(--primary-pink); color: white; }
+        #noBtn { background: #ccc; color: white; }
+        .hidden { display: none !important; }
+
+        #youtube-player { position: absolute; top: -9999px; left: -9999px; }
+    </style>
+</head>
+<body>
+
+    <div id="youtube-player"></div>
+
+    <div id="page1">
+        <div class="envelope-wrapper" onclick="startExperience()">
+            <div class="envelope-icon">✉️</div>
+            <p>เธอมี 1 ข้อความใหม่.. กดเปิดดูสิ</p>
+        </div>
+    </div>
+
+    <div id="page2">
+        <div class="paper-card">
+            <div class="media-frame">
+                <img id="displayImg" src="Pics/1.jpg" alt="Memory">
+            </div>
+            <p id="photoText">ยินดีด้วยที่เปิดเจอ!</p>
+            <button id="nextBtn" onclick="nextContent()" style="background:#ff8fa3; color:white;">ดูรูปถัดไป 👉</button>
+            <button id="toLetterBtn" class="hidden" onclick="goLetter()" style="background:var(--primary-pink); color:white;">มีอะไรจะให้อ่านด้วย</button>
+        </div>
+    </div>
+
+    <div id="page-letter">
+        <div class="long-letter">
+            <h3 style="text-align: center; color: var(--primary-pink);">ถึงเธอนะ หมูอ้วน ❤️</h3>
+            <p>
+                สุขสันต์วันวาเลนไทน์นะอ้วน... <br><br>
+                ตั้งแต่วันแรกที่เจอกันจนถึงวันนี้ ขอบคุณนะที่คอยอยู่ข้างๆ กันมาตลอด 
+                ถึงแม้บางครั้งเราจะงอนกันบ้าง ทะเลาะกันบ้าง แต่เธอก็ยังเป็นคนสำคัญที่สุดในใจเค้าเสมอ
+                <br><br>
+                เค้าอาจจะไม่ได้พูดหวานๆ บ่อย หรือไม่ได้มีอะไรพิเศษให้มากมาย 
+                แต่ความรักที่เค้ามีให้เธอ มันเพิ่มขึ้นทุกวันเลยนะ 
+                ดีใจจริงๆ ที่ได้ไปเชียงคานด้วยกัน ได้ไปดูหนังด้วยกัน และได้ใช้เวลาร่วมกัน
+                <br><br>
+                อยู่เป็น "หมูอ้วน" ของเค้าแบบนี้ไปนานๆ นะคั้บ... รักเธอที่สุดในโลกเลย!
+            </p>
+            <div style="text-align: center; margin-top: 30px;">
+                <button onclick="goFinal()" style="background: var(--primary-pink); color: white;">กดเพื่อตอบคำถาม 💌</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="page3">
+        <img id="rabbitGif" class="rabbit-gif" src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExbW5lenZyZHI5OXM2eW95b3pmMG40cWVrMDhtNjVuM3A4dGNxa2g2dSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/VM1fcpu2bKs1e2Kdbj/giphy.gif">
+        <h2 id="questionText" style="white-space: pre-line;">รักเค้ามั้ย?</h2>
+        <div class="btn-group">
+            <button id="yesBtn" onclick="ansYes()">รัก</button>
+            <button id="noBtn" onclick="ansNo()">ไม่รัก</button>
+        </div>
+    </div>
+
+    <script>
+        var player;
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('youtube-player', {
+                height: '0', width: '0', videoId: 'ty_3ox-peHg',
+                playerVars: { 'autoplay': 0, 'loop': 1, 'playlist': 'ty_3ox-peHg' }
+            });
+        }
+
+        var tag = document.createElement('script');
+        tag.src = "https://www.youtube.com/iframe_api";
+        var firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+        const myPics = ["Pics/1.jpg", "Pics/2.jpg", "Pics/3.jpg", "Pics/4.jpg", "Pics/5.jpg", "Pics/6.jpg", "Pics/7.jpg", "Pics/8.jpg"];
+        const messages = [
+            "ยินดีด้วยที่เปิดเจอ!", "รูปนี้น่ารักจัง", "มีความสุขทุกครั้งที่อยู่ด้วยนะอ้วน", 
+            "ขอบคุณที่เข้ามาในชีวิตนะ", "ถ่ายหน้ากระจกที่ เชียงคานต้วย", "อยากไปเที่ยวด้วยกันอีก", 
+            "รักนะหมูอ้วน เค้ารักเธอมากๆ", "รูปสุดท้ายแล้วนะ... เซะซี่ม้ะ  55555"
+        ];
+
+        let idx = 0;
+        let noStep = 0;
+        const noWords = ["รักหน่อยย", "ใจร้ายจัง", "ไม่รักจริงหรอ?", "น้อยใจแล้วนะ", "แงงงงงง", "ยอมกดรักเถอะ!"];
+
+        function startExperience() {
+            if (player && player.playVideo) player.playVideo();
+            document.getElementById('page1').style.display = 'none';
+            document.getElementById('page2').style.display = 'flex';
+            startHearts();
+        }
+
+        function nextContent() {
+            idx++;
+            if (idx < myPics.length) {
+                document.getElementById('displayImg').src = myPics[idx];
+                document.getElementById('photoText').innerText = messages[idx];
+            }
+            if (idx === myPics.length - 1) {
+                document.getElementById('nextBtn').classList.add('hidden');
+                document.getElementById('toLetterBtn').classList.remove('hidden');
+            }
+        }
+
+        function goLetter() {
+            document.getElementById('page2').style.display = 'none';
+            document.getElementById('page-letter').style.display = 'flex';
+        }
+
+        function goFinal() {
+            document.getElementById('page-letter').style.display = 'none';
+            document.getElementById('page3').style.display = 'flex';
+        }
+
+        function ansNo() {
+            const btnNo = document.getElementById('noBtn');
+            const btnYes = document.getElementById('yesBtn');
+            btnNo.innerText = noWords[Math.min(noStep, noWords.length - 1)];
+            noStep++;
+            let size = parseFloat(window.getComputedStyle(btnYes).fontSize);
+            btnYes.style.fontSize = (size + 12) + "px";
+            btnYes.style.padding = (size) + "px " + (size * 2) + "px";
+        }
+
+        function ansYes() {
+            document.getElementById('questionText').innerText = "เค้าก็รักเธอเหมือนกันนะ! ❤️\n Happy valentines day น้าาาา";
+            document.getElementById('rabbitGif').src = "https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExMmo3c3l5ODh3ZGN6NHhhaDE2Mjg1ZjkwOXczdDFxbWM3dTBtaW9zaiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/9XY4f3FgFTT4QlaYqa/giphy.gif";
+            document.getElementById('noBtn').classList.add('hidden');
+            document.getElementById('yesBtn').innerText = "งื้อออออ";
+        }
+
+        function startHearts() {
+            const symbols = ['❤️', '🌹', '💖', '🌸'];
+            setInterval(() => {
+                const el = document.createElement('div');
+                el.className = 'floating-emoji';
+                el.innerText = symbols[Math.floor(Math.random() * symbols.length)];
+                el.style.left = Math.random() * 100 + 'vw';
+                el.style.animationDuration = (Math.random() * 2 + 4) + 's';
+                document.body.appendChild(el);
+                setTimeout(() => el.remove(), 6000);
+            }, 400);
+        }
+    </script>
+</body>
+</html>
